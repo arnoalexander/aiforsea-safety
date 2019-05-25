@@ -1,4 +1,5 @@
 # folder
-.ipynb_checkpoints/*
-__pycache__/*
-data/*
+.idea/
+data/
+.ipynb_checkpoints/
+__pycache__/
