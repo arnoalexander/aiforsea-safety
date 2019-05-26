@@ -1,5 +1,5 @@
 # folder
-.idea/
-data/
+.idea/*
+data/*
 .ipynb_checkpoints/
 __pycache__/
