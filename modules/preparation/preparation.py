@@ -4,7 +4,7 @@ import pandas as pd
 from tqdm import tqdm
 
 
-def partition(inputs=[], output=None, n=0, divide_by=None, sort_by=None, base_name='partition'):
+def partition(inputs=[], output_dir=None, n=0, divide_by=None, sort_by=None, base_name='partition'):
 
     # parameter preprocessing
     if not isinstance(inputs, list):
@@ -13,7 +13,7 @@ def partition(inputs=[], output=None, n=0, divide_by=None, sort_by=None, base_na
         sort_by = [sort_by]
 
     # helper filter function
-    def partition_filter(is_filter=False, divide_by_whitelist=[]):
+    def _partition_filter(is_filter=False, divide_by_whitelist=[]):
         df = pd.DataFrame()
         for input_unit in tqdm(inputs):
             if isinstance(input_unit, pd.DataFrame):
@@ -28,15 +28,15 @@ def partition(inputs=[], output=None, n=0, divide_by=None, sort_by=None, base_na
         return df
 
     # dataframe result
-    if not output or n < 1:
-        return partition_filter()
+    if not output_dir or n < 1:
+        return _partition_filter()
 
     # no-filter file result
     if not divide_by or n == 1:
         filename = base_name + '_1p_0.csv'
         print("Writing partition result to", filename)
-        df_result = partition_filter()
-        df_result.to_csv(os.path.join(output, filename), index=False)
+        df_result = _partition_filter()
+        df_result.to_csv(os.path.join(output_dir, filename), index=False)
         return
 
     # identifying unique id values (divide_by)
@@ -56,11 +56,11 @@ def partition(inputs=[], output=None, n=0, divide_by=None, sort_by=None, base_na
         filename = base_name + '_' + str(n) + 'p_' + str(i) + '.csv'
         print("Writing partition result to", filename, '('+str(i+1)+'/'+str(n)+')')
         divide_by_whitelist = unique_ids[len(unique_ids) * i // n: len(unique_ids) * (i + 1) // n]
-        df_result = partition_filter(is_filter=True, divide_by_whitelist=divide_by_whitelist)
-        df_result.to_csv(os.path.join(output, filename), index=False)
+        df_result = _partition_filter(is_filter=True, divide_by_whitelist=divide_by_whitelist)
+        df_result.to_csv(os.path.join(output_dir, filename), index=False)
 
 
-def aggregate(inputs=[]):
+def aggregation(inputs=[], base_name='aggregation'):
 
     # parameter preprocessing
     if not isinstance(inputs, list):
