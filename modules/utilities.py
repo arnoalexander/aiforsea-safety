@@ -1,16 +1,13 @@
 import os
-import sys
 import numpy as np
 import pandas as pd
 from tqdm import tqdm
 
-sys.path.append('..')
-import definitions
-
 
 class Utilities:
 
-    def partition(self, inputs=None, output=None, n=0, divide_by=None, sort_by=None, base_name='partition'):
+    @staticmethod
+    def partition(inputs=None, output=None, n=0, divide_by=None, sort_by=None, base_name='partition'):
 
         # parameter preprocessing
         if not isinstance(inputs, list):
@@ -24,8 +21,11 @@ class Utilities:
         # helper filter function
         def partition_filter(is_filter=False, divide_by_whitelist=[]):
             df = pd.DataFrame()
-            for path in tqdm(inputs):
-                df_filtered = pd.read_csv(path)
+            for input_unit in tqdm(inputs):
+                if isinstance(input_unit, pd.DataFrame):
+                    df_filtered = input_unit
+                else:
+                    df_filtered = pd.read_csv(input_unit)
                 if is_filter:
                     df_filtered = df_filtered[df_filtered[divide_by].isin(divide_by_whitelist)]
                 df = df.append(df_filtered, ignore_index=True)
@@ -48,8 +48,11 @@ class Utilities:
         # identifying unique id values (divide_by)
         print("Identifying unique IDs")
         unique_ids = []
-        for path in tqdm(inputs):
-            df_part = pd.read_csv(path)
+        for input_unit in tqdm(inputs):
+            if isinstance(input_unit, pd.DataFrame):
+                df_part = input_unit
+            else:
+                df_part = pd.read_csv(input_unit)
             unique_ids.append(df_part[divide_by].unique())
         unique_ids = np.array(unique_ids)
         unique_ids = np.unique(unique_ids.flatten(), axis=0)
@@ -61,9 +64,3 @@ class Utilities:
             divide_by_whitelist = unique_ids[len(unique_ids) * i // n: len(unique_ids) * (i + 1) // n]
             df_result = partition_filter(is_filter=True, divide_by_whitelist=divide_by_whitelist)
             df_result.to_csv(os.path.join(output, filename), index=False)
-
-
-if __name__ == "__main__":
-    util = Utilities()
-    inputs = [os.path.join(definitions.DATA_ORIGIN, file) for file in os.listdir(definitions.DATA_ORIGIN)]
-    util.partition(inputs=inputs, output=definitions.DATA_PART, n=20, divide_by='bookingID', sort_by=['bookingID', 'second'])
