@@ -3,11 +3,11 @@ import os
 
 sys.path.append('..')
 import definitions
-from modules import preparation
+from modules import preparation, common
 
 if __name__ == "__main__":
-    divide_by = 'bookingID'
-    sort_by = ['bookingID', 'second']
+    divide_by = common.FEAT_booking_id
+    sort_by = [common.FEAT_booking_id, common.FEAT_second]
     base_filename = "transformed_train"
     if len(sys.argv) > 1:
         num_partition = int(sys.argv[1])
@@ -17,6 +17,6 @@ if __name__ == "__main__":
     print('Partitioning training data')
 
     inputs = [os.path.join(definitions.DATA_ORIGIN, file) for file in os.listdir(definitions.DATA_ORIGIN)]
-    preparation.partition(inputs=inputs, output_dir=definitions.DATA_PART, n=num_partition, divide_by=divide_by, sort_by=sort_by, base_name=base_filename)
+    preparation.run_partition(inputs=inputs, output_dir=definitions.DATA_PART, n=num_partition, base_name=base_filename)
         
     print("Data partition finished")

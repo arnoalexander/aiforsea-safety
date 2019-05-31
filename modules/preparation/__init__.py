@@ -1,1 +1,1 @@
-from .preparation import partition, aggregate
+from .partition import run_partition
