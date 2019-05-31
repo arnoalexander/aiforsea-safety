@@ -60,7 +60,7 @@ def partition(inputs=[], output_dir=None, n=0, divide_by=None, sort_by=None, bas
         df_result.to_csv(os.path.join(output_dir, filename), index=False)
 
 
-def aggregation(inputs=[], base_name='aggregation'):
+def aggregate(inputs=[], base_name='aggregation'):
 
     # parameter preprocessing
     if not isinstance(inputs, list):

@@ -1,1 +1,1 @@
-from .preparation import partition, aggregation
+from .preparation import partition, aggregate
