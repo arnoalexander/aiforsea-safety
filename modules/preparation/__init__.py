@@ -1,1 +1,2 @@
-from .partition import run_partition
+from .partition import Partition
+from .aggregation import Aggregation
