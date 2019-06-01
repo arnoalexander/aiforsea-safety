@@ -3,12 +3,10 @@ import os
 
 sys.path.append('..')
 import definitions
-from modules import common, preparation
+from modules import preparation
 
 
 if __name__ == "__main__":
-    divide_by = common.Feature.FEAT_booking_id
-    sort_by = [common.Feature.FEAT_booking_id, common.Feature.FEAT_second]
     base_filename = "transformed_train"
     if len(sys.argv) > 1:
         num_partition = int(sys.argv[1])

@@ -14,11 +14,16 @@ class Feature:
     FEAT_speed = 'Speed'
 
     # 1.2. engineered
+    PREFIX_mean = 'mean'
     # TODO add engineered/extracted feature
 
     # 1.3 utility
-    FEAT_UTIL_at = '_'
+    UTIL_connect = '_'
 
     @classmethod
     def feat_at(cls, feat, at):
-        return feat + cls.FEAT_UTIL_at + str(at)
+        return feat + cls.UTIL_connect + str(at)
+
+    @classmethod
+    def feat_prefix(cls, feat, prefix):
+        return prefix + cls.UTIL_connect + feat
