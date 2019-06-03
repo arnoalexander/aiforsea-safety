@@ -5,12 +5,6 @@ from .. import common
 
 class FeatureExtraction:
 
-    # CONSTANT
-
-    EXTRACTED = [common.Feature.FEAT_booking_id,
-                 'A',
-                 'B']  # TODO add more extracted features
-
     # HELPER METHODS
 
     @classmethod
@@ -20,15 +14,15 @@ class FeatureExtraction:
     # MAIN METHODS
 
     @classmethod
-    def switch(cls, feature, dataframe):  # TODO add more extraction by feature
+    def switch(cls, dataframe, feature):  # TODO add more extraction by feature
         if feature == common.Feature.FEAT_booking_id:
             return cls.get_booking_id(dataframe)
         else:
             return -1
 
     @classmethod
-    def run(cls, dataframe):
+    def run(cls, dataframe, features):
         result_list = []
-        for feat in cls.EXTRACTED:
-            result_list.append(cls.switch(feat, dataframe))
+        for feature in features:
+            result_list.append(cls.switch(dataframe, feature))
         return np.array(result_list)

@@ -9,20 +9,22 @@ from .. import common
 class Aggregation:
 
     @classmethod
-    def aggregate(cls, dataframe, by):
+    def aggregate(cls, dataframe, by, features):
         group_df = dataframe.groupby(by)
         list_df = []
         for key, df_part in tqdm(group_df):
-            list_df.append(FeatureExtraction.run(df_part))
+            list_df.append(FeatureExtraction.run(df_part, features))
         list_df = np.array(list_df)
-        return pd.DataFrame(data=list_df, columns=FeatureExtraction.EXTRACTED)
+        return pd.DataFrame(data=list_df, columns=features)
 
     @classmethod
-    def run(cls, inputs=[]):
+    def run(cls, inputs=[], features=[]):
 
         # parameter preprocessing
         if not isinstance(inputs, list):
             inputs = [inputs]
+        if not isinstance(features, list):
+            features = [features]
 
         # aggregation by id
         df_result = pd.DataFrame()
@@ -32,6 +34,6 @@ class Aggregation:
                 df_part = input_unit
             else:
                 df_part = pd.read_csv(input_unit)
-            df_part = cls.aggregate(df_part, common.Feature.FEAT_booking_id)
+            df_part = cls.aggregate(df_part, common.Feature.FEAT_booking_id, features)
             df_result = df_result.append(df_part, ignore_index=True)
         return df_result

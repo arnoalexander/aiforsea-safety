@@ -14,7 +14,15 @@ class Feature:
     FEAT_speed = 'Speed'
 
     # 1.2. engineered
-    PREFIX_mean = 'mean'
+    FEAT_mean_accuracy = 'mean_accuracy'
+    FEAT_mean_bearing = 'mean_bearing'
+    FEAT_mean_acceleration_x = 'mean_acceleration_x'
+    FEAT_mean_acceleration_y = 'mean_acceleration_y'
+    FEAT_mean_acceleration_z = 'mean_acceleration_z'
+    FEAT_mean_gyro_x = 'mean_gyro_x'
+    FEAT_mean_gyro_y = 'mean_gyro_y'
+    FEAT_mean_gyro_z = 'mean_gyro_z'
+    FEAT_mean_speed = 'mean_speed'
     # TODO add engineered/extracted feature
 
     # 1.3 utility
@@ -23,7 +31,3 @@ class Feature:
     @classmethod
     def feat_at(cls, feat, at):
         return feat + cls.UTIL_connect + str(at)
-
-    @classmethod
-    def feat_prefix(cls, feat, prefix):
-        return prefix + cls.UTIL_connect + feat
