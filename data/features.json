@@ -1,5 +1,12 @@
 [
   "bookingID",
-  "test_1",
-  "test_2"
+  "mean_accuracy",
+  "mean_bearing",
+  "mean_acceleration_x",
+  "mean_acceleration_y",
+  "mean_acceleration_z",
+  "mean_gyro_x",
+  "mean_gyro_y",
+  "mean_gyro_z",
+  "mean_speed"
 ]
