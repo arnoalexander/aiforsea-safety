@@ -16,6 +16,6 @@ if __name__ == "__main__":
     print('Partitioning training data')
 
     inputs = [os.path.join(definitions.DATA_ORIGIN, file) for file in os.listdir(definitions.DATA_ORIGIN)]
-    preparation.Partition.run(inputs=inputs, output_dir=definitions.DATA_PART, n=num_partition, base_name=base_filename)
+    preparation.Preprocessing.run(inputs=inputs, output_dir=definitions.DATA_PREP, n=num_partition, base_name=base_filename)
         
     print("Data partition finished")

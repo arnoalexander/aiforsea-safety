@@ -1,2 +1,2 @@
-from .partition import Partition
+from .preprocessing import Preprocessing
 from .aggregation import Aggregation

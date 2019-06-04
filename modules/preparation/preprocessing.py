@@ -6,7 +6,7 @@ from tqdm import tqdm
 from .. import common
 
 
-class Partition:
+class Preprocessing:
 
     @classmethod
     def join(cls, inputs=[], filter_by=None, filter_whitelist=[]):
@@ -46,14 +46,14 @@ class Partition:
         if not isinstance(sort_by, list) and sort_by:
             sort_by = [sort_by]
 
-        # one-part dataframe result
+        # one-prep dataframe result
         if not output_dir or n < 1:
             df_result = cls.join(inputs)
             if sort_by:
                 return cls.sort(df_result, sort_by)
             return df_result
 
-        # one-part no-filter file result
+        # one-prep no-filter file result
         if not filter_by or n == 1:
             filename = base_name + '_1p_0.csv'
             print("Writing partition result to", filename)

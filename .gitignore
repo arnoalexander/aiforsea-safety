@@ -2,7 +2,4 @@
 .idea/*
 .ipynb_checkpoints/
 __pycache__/
-data/label/*
-data/origin/*
-data/part/*
-data/aggregated/*
+data/*/*

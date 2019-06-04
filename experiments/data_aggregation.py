@@ -12,7 +12,7 @@ if __name__ == "__main__":
 
     print('Aggregating training data to', filename)
 
-    inputs = [os.path.join(definitions.DATA_PART, file) for file in os.listdir(definitions.DATA_PART)]
+    inputs = [os.path.join(definitions.DATA_PREP, file) for file in os.listdir(definitions.DATA_PREP)]
     features = json.load(open(definitions.DATA_FEATURES, 'r'))
     df_result = preparation.Aggregation.run(inputs, features)
     df_result.to_csv(os.path.join(definitions.DATA_AGGREGATED, filename), index=False)
