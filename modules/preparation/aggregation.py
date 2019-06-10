@@ -1,5 +1,4 @@
 import pandas as pd
-import numpy as np
 from tqdm import tqdm
 
 from .feature_extraction import FeatureExtraction
@@ -33,4 +32,5 @@ class Aggregation:
                 df_part = pd.read_csv(input_unit)
             df_part = cls.aggregate(df_part, Feature.FEAT_booking_id)
             df_result = df_result.append(df_part, ignore_index=True)
+
         return df_result

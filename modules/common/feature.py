@@ -13,6 +13,8 @@ class Feature:
     FEAT_second = 'second'
     FEAT_speed = 'Speed'
 
+    TARGET = 'label'
+
     # 1.2. engineered
     FEAT_mean_accuracy = 'mean_accuracy'
     FEAT_mean_bearing = 'mean_bearing'
