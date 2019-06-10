@@ -1,6 +1,6 @@
 import numpy as np
 
-from .. import common
+from ..common import Feature
 
 
 class FeatureExtraction:
@@ -15,36 +15,36 @@ class FeatureExtraction:
     def mean(cls, array):
         return np.mean(array)
 
-    # MAIN METHODS
+    # INTERMEDIATE METHODS
 
     @classmethod
-    def extract(cls, dataframe, feature):  # TODO add more extraction by feature
-        if feature == common.Feature.FEAT_booking_id:
-            return cls.get_element(dataframe[feature].values, 0)
-        elif feature == common.Feature.FEAT_mean_accuracy:
-            return cls.mean(dataframe[common.Feature.FEAT_accuracy].values)
-        elif feature == common.Feature.FEAT_mean_bearing:
-            return cls.mean(dataframe[common.Feature.FEAT_bearing].values)
-        elif feature == common.Feature.FEAT_mean_acceleration_x:
-            return cls.mean(dataframe[common.Feature.FEAT_acceleration_x].values)
-        elif feature == common.Feature.FEAT_mean_acceleration_y:
-            return cls.mean(dataframe[common.Feature.FEAT_acceleration_y].values)
-        elif feature == common.Feature.FEAT_mean_acceleration_z:
-            return cls.mean(dataframe[common.Feature.FEAT_acceleration_z].values)
-        elif feature == common.Feature.FEAT_mean_gyro_x:
-            return cls.mean(dataframe[common.Feature.FEAT_gyro_x].values)
-        elif feature == common.Feature.FEAT_mean_gyro_y:
-            return cls.mean(dataframe[common.Feature.FEAT_gyro_y].values)
-        elif feature == common.Feature.FEAT_mean_gyro_z:
-            return cls.mean(dataframe[common.Feature.FEAT_gyro_z].values)
-        elif feature == common.Feature.FEAT_mean_speed:
-            return cls.mean(dataframe[common.Feature.FEAT_speed].values)
-        else:
-            return np.nan
+    def expand(cls, dataframe):  # TODO generate new intermediate features in original data
+        return dataframe
 
     @classmethod
-    def run(cls, dataframe, features):
-        result_list = []
-        for feature in features:
-            result_list.append(cls.extract(dataframe, feature))
-        return np.array(result_list)
+    def extract(cls, dataframe):  # TODO add more extraction by feature
+
+        result_dict = dict()
+
+        # primary key
+        result_dict[Feature.FEAT_booking_id] = cls.get_element(dataframe[Feature.FEAT_booking_id].values, 0)
+
+        # mean features
+        result_dict[Feature.FEAT_mean_accuracy] = cls.mean(dataframe[Feature.FEAT_accuracy].values)
+        result_dict[Feature.FEAT_mean_bearing] = cls.mean(dataframe[Feature.FEAT_bearing].values)
+        result_dict[Feature.FEAT_mean_acceleration_x] = cls.mean(dataframe[Feature.FEAT_acceleration_x].values)
+        result_dict[Feature.FEAT_mean_acceleration_y] = cls.mean(dataframe[Feature.FEAT_acceleration_y].values)
+        result_dict[Feature.FEAT_mean_acceleration_z] = cls.mean(dataframe[Feature.FEAT_acceleration_z].values)
+        result_dict[Feature.FEAT_mean_gyro_x] = cls.mean(dataframe[Feature.FEAT_gyro_x].values)
+        result_dict[Feature.FEAT_mean_gyro_y] = cls.mean(dataframe[Feature.FEAT_gyro_y].values)
+        result_dict[Feature.FEAT_mean_gyro_z] = cls.mean(dataframe[Feature.FEAT_gyro_z].values)
+        result_dict[Feature.FEAT_mean_speed] = cls.mean(dataframe[Feature.FEAT_speed].values)
+
+        return result_dict
+
+    # MAIN METHOD
+
+    @classmethod
+    def run(cls, dataframe):
+        extended_dataframe = cls.expand(dataframe)
+        return cls.extract(extended_dataframe)
