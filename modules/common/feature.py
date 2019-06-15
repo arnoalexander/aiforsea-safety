@@ -16,6 +16,9 @@ class Feature:
     TARGET = 'label'
 
     # 1.2. engineered (expansion)
+    FEAT_valid_bearing = 'valid_bearing'
+    FEAT_valid_speed = 'valid_speed'
+
     FEAT_deltasec = 'deltasec'
     FEAT_deltasec_bearing = 'deltasec_bearing'
     FEAT_deltasec_speed = 'deltasec_speed'

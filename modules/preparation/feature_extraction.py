@@ -15,29 +15,31 @@ class FeatureExtraction:
     def mean(cls, array):
         return np.mean(array)
 
+    @classmethod
+    def is_speed_missing(cls, speed):
+        return speed == -1
+
+    @classmethod
+    def is_bearing_missing(cls, bearing, speed):
+        return bearing == 0 & (speed == 0 | cls.is_speed_missing(speed))
+
+    @classmethod
+    def calc_deltasec(cls, arr_second):
+        arr_second_prev = np.insert(arr_second[:-1], 0, np.nan)
+        return np.where(arr_second_prev != np.nan, arr_second - arr_second_prev, Value.MISSING_NUM)
+
     # INTERMEDIATE METHODS
 
     @classmethod
-    def expand(cls, dataframe):  # TODO generate new intermediate features in original data
+    def expand(cls, dataframe):
 
-        # prepare dataframe
+        # preparation
         dataframe = dataframe.reset_index(drop=True)
-        dataframe[Feature.FEAT_deltasec] = np.nan
-        dataframe[Feature.FEAT_deltasec_bearing] = np.nan
-        dataframe[Feature.FEAT_deltasec_speed] = np.nan
-        dataframe[Feature.FEAT_delta_bearing] = np.nan
-        dataframe[Feature.FEAT_delta_speed] = np.nan
 
         # fill expansion
-        for index in range(len(dataframe)):
-
-            # deltasec
-            if index > 0:
-                dataframe.iloc[index, dataframe.columns.get_loc(Feature.FEAT_deltasec)] = \
-                    dataframe.iloc[index, dataframe.columns.get_loc(Feature.FEAT_second)] \
-                    - dataframe.iloc[index - 1, dataframe.columns.get_loc(Feature.FEAT_second)]
-            else:
-                dataframe.iloc[index, dataframe.columns.get_loc(Feature.FEAT_deltasec)] = Value.MISSING_NUM
+        dataframe[Feature.FEAT_valid_speed] = np.invert(cls.is_speed_missing(dataframe[Feature.FEAT_speed].values)).astype(int)
+        dataframe[Feature.FEAT_valid_bearing] = np.invert(cls.is_bearing_missing(dataframe[Feature.FEAT_bearing].values, dataframe[Feature.FEAT_speed].values)).astype(int)
+        dataframe[Feature.FEAT_deltasec] = cls.calc_deltasec(dataframe[Feature.FEAT_second].values)
 
         return dataframe
 
