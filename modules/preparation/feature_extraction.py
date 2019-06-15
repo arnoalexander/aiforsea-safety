@@ -1,6 +1,6 @@
 import numpy as np
 
-from ..common import Feature
+from ..common import Feature, Value
 
 
 class FeatureExtraction:
@@ -19,6 +19,26 @@ class FeatureExtraction:
 
     @classmethod
     def expand(cls, dataframe):  # TODO generate new intermediate features in original data
+
+        # prepare dataframe
+        dataframe = dataframe.reset_index(drop=True)
+        dataframe[Feature.FEAT_deltasec] = np.nan
+        dataframe[Feature.FEAT_deltasec_bearing] = np.nan
+        dataframe[Feature.FEAT_deltasec_speed] = np.nan
+        dataframe[Feature.FEAT_delta_bearing] = np.nan
+        dataframe[Feature.FEAT_delta_speed] = np.nan
+
+        # fill expansion
+        for index in range(len(dataframe)):
+
+            # deltasec
+            if index > 0:
+                dataframe.iloc[index, dataframe.columns.get_loc(Feature.FEAT_deltasec)] = \
+                    dataframe.iloc[index, dataframe.columns.get_loc(Feature.FEAT_second)] \
+                    - dataframe.iloc[index - 1, dataframe.columns.get_loc(Feature.FEAT_second)]
+            else:
+                dataframe.iloc[index, dataframe.columns.get_loc(Feature.FEAT_deltasec)] = Value.MISSING_NUM
+
         return dataframe
 
     @classmethod

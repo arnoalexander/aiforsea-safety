@@ -15,7 +15,15 @@ class Feature:
 
     TARGET = 'label'
 
-    # 1.2. engineered
+    # 1.2. engineered (expansion)
+    FEAT_deltasec = 'deltasec'
+    FEAT_deltasec_bearing = 'deltasec_bearing'
+    FEAT_deltasec_speed = 'deltasec_speed'
+
+    FEAT_delta_bearing = 'delta_bearing'
+    FEAT_delta_speed = 'delta_speed'
+
+    # 1.3. engineered (aggregate)
     FEAT_mean_accuracy = 'mean_accuracy'
     FEAT_mean_bearing = 'mean_bearing'
     FEAT_mean_acceleration_x = 'mean_acceleration_x'
@@ -27,7 +35,7 @@ class Feature:
     FEAT_mean_speed = 'mean_speed'
     # TODO add engineered/extracted feature
 
-    # 1.3 utility
+    # 1.4. utility
     UTIL_connect = '_'
 
     @classmethod
