@@ -1,6 +1,6 @@
 import numpy as np
 
-from ..common import Feature, Value
+from ..common import Feature, Utility, Value
 
 
 class FeatureExtraction:
@@ -37,6 +37,22 @@ class FeatureExtraction:
         np.put(arr_valid_second_prev, arg_valid_second, arr_valid_second_only_prev)
         return np.where(np.invert(np.isnan(arr_valid_second_prev)), arr_second - arr_valid_second_prev, Value.MISSING_NUM)
 
+    @classmethod
+    def calc_div(cls, arr_numerator, arr_denominator, arr_valid=None, missing_values=(np.nan, Value.MISSING_NUM), default_value=Value.MISSING_NUM):
+
+        # parameter preprocessing
+        missing_values = Utility.make_iterable(missing_values)
+
+        # calculation
+        if arr_valid is not None:
+            return np.where(np.isin(arr_numerator, missing_values) | np.isin(arr_denominator, missing_values) | np.invert(arr_valid.astype(bool)),
+                            default_value,
+                            arr_numerator / arr_denominator)
+        else:
+            return np.where(np.isin(arr_numerator, missing_values) | np.isin(arr_denominator, missing_values),
+                            default_value,
+                            arr_numerator / arr_denominator)
+
     # INTERMEDIATE METHODS
 
     @classmethod
@@ -50,8 +66,13 @@ class FeatureExtraction:
         dataframe[Feature.FEAT_valid_bearing] = np.invert(cls.is_bearing_missing(dataframe[Feature.FEAT_bearing].values, dataframe[Feature.FEAT_speed].values)).astype(int)
 
         dataframe[Feature.FEAT_deltasec] = cls.calc_deltasec(dataframe[Feature.FEAT_second].values)
-        dataframe[Feature.FEAT_deltasec_bearing] = cls.calc_deltasec_valid(dataframe[Feature.FEAT_second].values, dataframe[Feature.FEAT_valid_bearing].values)
         dataframe[Feature.FEAT_deltasec_speed] = cls.calc_deltasec_valid(dataframe[Feature.FEAT_second].values, dataframe[Feature.FEAT_valid_speed].values)
+        dataframe[Feature.FEAT_deltasec_bearing] = cls.calc_deltasec_valid(dataframe[Feature.FEAT_second].values, dataframe[Feature.FEAT_valid_bearing].values)
+
+        delta_speed_raw = cls.calc_deltasec_valid(dataframe[Feature.FEAT_speed].values, dataframe[Feature.FEAT_valid_speed].values)
+        dataframe[Feature.FEAT_delta_speed] = cls.calc_div(delta_speed_raw, dataframe[Feature.FEAT_deltasec_speed].values, dataframe[Feature.FEAT_valid_speed].values)
+        delta_bearing_raw = cls.calc_deltasec_valid(dataframe[Feature.FEAT_bearing].values, dataframe[Feature.FEAT_valid_bearing].values)
+        dataframe[Feature.FEAT_delta_bearing] = cls.calc_div(delta_bearing_raw, dataframe[Feature.FEAT_deltasec_bearing].values, dataframe[Feature.FEAT_valid_bearing].values)
 
         return dataframe
 
