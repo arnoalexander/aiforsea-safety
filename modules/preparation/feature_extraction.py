@@ -26,7 +26,16 @@ class FeatureExtraction:
     @classmethod
     def calc_deltasec(cls, arr_second):
         arr_second_prev = np.insert(arr_second[:-1], 0, np.nan)
-        return np.where(arr_second_prev != np.nan, arr_second - arr_second_prev, Value.MISSING_NUM)
+        return np.where(np.invert(np.isnan(arr_second_prev)), arr_second - arr_second_prev, Value.MISSING_NUM)
+
+    @classmethod
+    def calc_deltasec_valid(cls, arr_second, arr_valid):
+        arg_valid_second = np.argwhere(arr_valid == Value.TRUE).flatten()
+        arr_valid_second_only = arr_second[arg_valid_second]
+        arr_valid_second_only_prev = np.insert(arr_valid_second_only[:-1], 0, np.nan)
+        arr_valid_second_prev = np.full(shape=len(arr_second), fill_value=np.nan)
+        np.put(arr_valid_second_prev, arg_valid_second, arr_valid_second_only_prev)
+        return np.where(np.invert(np.isnan(arr_valid_second_prev)), arr_second - arr_valid_second_prev, Value.MISSING_NUM)
 
     # INTERMEDIATE METHODS
 
@@ -39,7 +48,10 @@ class FeatureExtraction:
         # fill expansion
         dataframe[Feature.FEAT_valid_speed] = np.invert(cls.is_speed_missing(dataframe[Feature.FEAT_speed].values)).astype(int)
         dataframe[Feature.FEAT_valid_bearing] = np.invert(cls.is_bearing_missing(dataframe[Feature.FEAT_bearing].values, dataframe[Feature.FEAT_speed].values)).astype(int)
+
         dataframe[Feature.FEAT_deltasec] = cls.calc_deltasec(dataframe[Feature.FEAT_second].values)
+        dataframe[Feature.FEAT_deltasec_bearing] = cls.calc_deltasec_valid(dataframe[Feature.FEAT_second].values, dataframe[Feature.FEAT_valid_bearing].values)
+        dataframe[Feature.FEAT_deltasec_speed] = cls.calc_deltasec_valid(dataframe[Feature.FEAT_second].values, dataframe[Feature.FEAT_valid_speed].values)
 
         return dataframe
 
