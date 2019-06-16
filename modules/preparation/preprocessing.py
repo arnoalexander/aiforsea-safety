@@ -9,7 +9,18 @@ from .. import common
 class Preprocessing:
 
     @classmethod
-    def join(cls, inputs=[], filter_by=None, filter_whitelist=[]):
+    def join(cls, inputs=None, filter_by=None, filter_whitelist=None):
+
+        # parameter preprocessing
+        if inputs is None:
+            inputs = []
+        elif not isinstance(inputs, list):
+            inputs = [inputs]
+        if filter_whitelist is None:
+            filter_whitelist = []
+        elif not isinstance(filter_whitelist, list):
+            filter_whitelist = [filter_whitelist]
+
         df_result = pd.DataFrame()
         for input_unit in tqdm(inputs):
             if isinstance(input_unit, pd.DataFrame):
@@ -38,10 +49,12 @@ class Preprocessing:
         return np.unique(unique_values.flatten(), axis=0)
 
     @classmethod
-    def partition(cls, inputs=[], output_dir=None, n=0, filter_by=None, sort_by=None, base_name='partition'):
+    def partition(cls, inputs=None, output_dir=None, n=0, filter_by=None, sort_by=None, base_name='partition'):
 
         # parameter preprocessing
-        if not isinstance(inputs, list):
+        if inputs is None:
+            inputs = []
+        elif not isinstance(inputs, list):
             inputs = [inputs]
         if not isinstance(sort_by, list) and sort_by:
             sort_by = [sort_by]
@@ -78,7 +91,7 @@ class Preprocessing:
             df_result.to_csv(os.path.join(output_dir, filename), index=False)
 
     @classmethod
-    def run(cls, inputs=[], output_dir=None, n=0, base_name='partition'):
+    def run(cls, inputs=None, output_dir=None, n=0, base_name='partition'):
         return cls.partition(inputs=inputs,
                              output_dir=output_dir,
                              n=n,

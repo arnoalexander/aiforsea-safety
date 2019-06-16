@@ -16,9 +16,11 @@ class Aggregation:
         return pd.DataFrame(list_df)
 
     @classmethod
-    def run(cls, inputs=[]):
+    def run(cls, inputs=None):
 
         # parameter preprocessing
+        if inputs is None:
+            inputs = []
         if not isinstance(inputs, list):
             inputs = [inputs]
 
