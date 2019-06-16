@@ -2,7 +2,7 @@ import pandas as pd
 from tqdm import tqdm
 
 from .feature_extraction import FeatureExtraction
-from ..common import Feature
+from ..common import Feature, Utility
 
 
 class Aggregation:
@@ -19,10 +19,7 @@ class Aggregation:
     def run(cls, inputs=None):
 
         # parameter preprocessing
-        if inputs is None:
-            inputs = []
-        if not isinstance(inputs, list):
-            inputs = [inputs]
+        inputs = Utility.make_iterable(inputs)
 
         # aggregation by id
         df_result = pd.DataFrame()

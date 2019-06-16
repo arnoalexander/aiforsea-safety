@@ -12,14 +12,8 @@ class Preprocessing:
     def join(cls, inputs=None, filter_by=None, filter_whitelist=None):
 
         # parameter preprocessing
-        if inputs is None:
-            inputs = []
-        elif not isinstance(inputs, list):
-            inputs = [inputs]
-        if filter_whitelist is None:
-            filter_whitelist = []
-        elif not isinstance(filter_whitelist, list):
-            filter_whitelist = [filter_whitelist]
+        inputs = common.Utility.make_iterable(inputs)
+        filter_whitelist = common.Utility.make_iterable(inputs)
 
         df_result = pd.DataFrame()
         for input_unit in tqdm(inputs):
@@ -52,10 +46,7 @@ class Preprocessing:
     def partition(cls, inputs=None, output_dir=None, n=0, filter_by=None, sort_by=None, base_name='partition'):
 
         # parameter preprocessing
-        if inputs is None:
-            inputs = []
-        elif not isinstance(inputs, list):
-            inputs = [inputs]
+        inputs = common.Utility.make_iterable(inputs)
         if not isinstance(sort_by, list) and sort_by:
             sort_by = [sort_by]
 
