@@ -156,6 +156,30 @@ class FeatureExtraction:
             dataframe[Feature.FEAT_scalar_gyro].values,
             dataframe[Feature.FEAT_second].values,
             default_value=np.nan)
+        dataframe[Feature.FEAT_delta_acceleration_x] = cls.calc_differential(
+            dataframe[Feature.FEAT_acceleration_x].values,
+            dataframe[Feature.FEAT_second].values,
+            default_value=np.nan)
+        dataframe[Feature.FEAT_delta_acceleration_y] = cls.calc_differential(
+            dataframe[Feature.FEAT_acceleration_y].values,
+            dataframe[Feature.FEAT_second].values,
+            default_value=np.nan)
+        dataframe[Feature.FEAT_delta_acceleration_z] = cls.calc_differential(
+            dataframe[Feature.FEAT_acceleration_z].values,
+            dataframe[Feature.FEAT_second].values,
+            default_value=np.nan)
+        dataframe[Feature.FEAT_delta_gyro_x] = cls.calc_differential(
+            dataframe[Feature.FEAT_gyro_x].values,
+            dataframe[Feature.FEAT_second].values,
+            default_value=np.nan)
+        dataframe[Feature.FEAT_delta_gyro_y] = cls.calc_differential(
+            dataframe[Feature.FEAT_gyro_x].values,
+            dataframe[Feature.FEAT_second].values,
+            default_value=np.nan)
+        dataframe[Feature.FEAT_delta_gyro_z] = cls.calc_differential(
+            dataframe[Feature.FEAT_gyro_x].values,
+            dataframe[Feature.FEAT_second].values,
+            default_value=np.nan)
 
         return dataframe
 
