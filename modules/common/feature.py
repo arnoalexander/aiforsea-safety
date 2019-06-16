@@ -19,12 +19,23 @@ class Feature:
     FEAT_valid_bearing = 'valid_bearing'
     FEAT_valid_speed = 'valid_speed'
 
+    FEAT_scalar_acceleration = 'scalar_acceleration'
+    FEAT_scalar_gyro = 'scalar_gyro'
+
     FEAT_deltasec = 'deltasec'
     FEAT_deltasec_bearing = 'deltasec_bearing'
     FEAT_deltasec_speed = 'deltasec_speed'
 
+    FEAT_delta_scalar_gyro = 'delta_scalar_gyro'
+    FEAT_delta_scalar_acceleration = 'delta_scalar_acceleration'
     FEAT_delta_bearing = 'delta_bearing'
     FEAT_delta_speed = 'delta_speed'
+    FEAT_delta_acceleration_x = 'delta_acceleration_x'
+    FEAT_delta_acceleration_y = 'delta_acceleration_y'
+    FEAT_delta_acceleration_z = 'delta_acceleration_z'
+    FEAT_delta_gyro_x = 'delta_gyro_x'
+    FEAT_delta_gyro_y = 'delta_gyro_y'
+    FEAT_delta_gyro_z = 'delta_gyro_z'
 
     # 1.3. engineered (aggregate)
     FEAT_mean_accuracy = 'mean_accuracy'
