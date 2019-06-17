@@ -1,6 +1,9 @@
 import sys
 import os
 
+import warnings
+warnings.filterwarnings('ignore')
+
 sys.path.append('..')
 import definitions
 from modules.preparation import Aggregation
