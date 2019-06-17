@@ -6,6 +6,13 @@ from sklearn.linear_model import LogisticRegression
 from lightgbm import LGBMClassifier
 
 
+class ClassifierUtility:
+    
+    @classmethod
+    def get_sample_weight(cls, y):
+        return np.where(y == 1, 2.0, 1.0)
+
+
 class Classifier(BaseEstimator, ClassifierMixin):
 
     def __init__(self):
