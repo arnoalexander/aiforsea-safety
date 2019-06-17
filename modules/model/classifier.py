@@ -2,7 +2,6 @@ import numpy as np
 
 from sklearn.metrics import roc_auc_score
 from sklearn.base import BaseEstimator, ClassifierMixin
-from sklearn.linear_model import LogisticRegression
 from lightgbm import LGBMClassifier
 
 
@@ -15,8 +14,11 @@ class ClassifierUtility:
 
 class Classifier(BaseEstimator, ClassifierMixin):
 
-    def __init__(self):
-        self.model = LGBMClassifier()
+    def __init__(self, base_estimator=None):
+        if base_estimator is None:
+            self.model = LGBMClassifier()
+        else:
+            self.model = base_estimator
 
     def fit(self, X, y, sample_weight=None):
         self.model.fit(X, y, sample_weight=sample_weight)

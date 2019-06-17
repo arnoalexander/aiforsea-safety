@@ -70,3 +70,8 @@ If yes, please do these steps to re-run the experiment process.
 3. Run the jupyter notebook
 
    `experiments/Experiment.ipynb` is the notebook containing the experiments
+
+
+## Experiment Documentation
+
+For more detailed information about this model, read [this](experiments/README.MD)
