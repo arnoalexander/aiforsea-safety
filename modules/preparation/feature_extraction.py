@@ -257,7 +257,8 @@ class FeatureExtraction:
         data_valid_bearing = dataframe[Feature.FEAT_valid_bearing].values
         data_valid_speed = dataframe[Feature.FEAT_valid_speed].values
         data_accuracy = dataframe[Feature.FEAT_accuracy].values
-        data_speed = np.flip(np.sort(dataframe[Feature.FEAT_speed]))
+        data_speed = np.flip(np.sort(
+            dataframe[dataframe[Feature.FEAT_valid_speed] == Value.TRUE][Feature.FEAT_speed].values))
         data_acceleration_x = np.flip(np.sort(dataframe[Feature.FEAT_acceleration_x].values))
         data_acceleration_y = np.flip(np.sort(dataframe[Feature.FEAT_acceleration_y].values))
         data_acceleration_z = np.flip(np.sort(dataframe[Feature.FEAT_acceleration_z].values))
@@ -267,16 +268,36 @@ class FeatureExtraction:
 
         data_scalar_acceleration = np.flip(np.sort(dataframe[Feature.FEAT_scalar_acceleration].values))
         data_scalar_gyro = np.flip(np.sort(dataframe[Feature.FEAT_scalar_gyro].values))
-        data_delta_scalar_acceleration = np.flip(np.sort(dataframe[Feature.FEAT_delta_scalar_acceleration].values))
-        data_delta_scalar_gyro = np.flip(np.sort(dataframe[Feature.FEAT_delta_scalar_gyro].values))
-        data_delta_bearing = np.flip(np.sort(dataframe[Feature.FEAT_delta_bearing].values))
-        data_delta_speed = np.flip(np.sort(dataframe[Feature.FEAT_delta_speed].values))
-        data_delta_acceleration_x = np.flip(np.sort(dataframe[Feature.FEAT_delta_acceleration_x].values))
-        data_delta_acceleration_y = np.flip(np.sort(dataframe[Feature.FEAT_delta_acceleration_y].values))
-        data_delta_acceleration_z = np.flip(np.sort(dataframe[Feature.FEAT_delta_acceleration_z].values))
-        data_delta_gyro_x = np.flip(np.sort(dataframe[Feature.FEAT_delta_gyro_x].values))
-        data_delta_gyro_y = np.flip(np.sort(dataframe[Feature.FEAT_delta_gyro_y].values))
-        data_delta_gyro_z = np.flip(np.sort(dataframe[Feature.FEAT_delta_gyro_z].values))
+        data_delta_scalar_acceleration = np.flip(np.sort(
+            dataframe[np.invert(np.isnan(dataframe[Feature.FEAT_delta_scalar_acceleration]))]
+            [Feature.FEAT_delta_scalar_acceleration].values))
+        data_delta_scalar_gyro = np.flip(np.sort(
+            dataframe[np.invert(np.isnan(dataframe[Feature.FEAT_delta_scalar_gyro]))]
+            [Feature.FEAT_delta_scalar_gyro].values))
+        data_delta_bearing = np.flip(np.sort(
+            dataframe[np.invert(np.isnan(dataframe[Feature.FEAT_delta_bearing]))]
+            [Feature.FEAT_delta_bearing].values))
+        data_delta_speed = np.flip(np.sort(
+            dataframe[np.invert(np.isnan(dataframe[Feature.FEAT_delta_speed]))]
+            [Feature.FEAT_delta_speed].values))
+        data_delta_acceleration_x = np.flip(np.sort(
+            dataframe[np.invert(np.isnan(dataframe[Feature.FEAT_delta_acceleration_x]))]
+            [Feature.FEAT_delta_acceleration_x].values))
+        data_delta_acceleration_y = np.flip(np.sort(
+            dataframe[np.invert(np.isnan(dataframe[Feature.FEAT_delta_acceleration_y]))]
+            [Feature.FEAT_delta_acceleration_y].values))
+        data_delta_acceleration_z = np.flip(np.sort(
+            dataframe[np.invert(np.isnan(dataframe[Feature.FEAT_delta_acceleration_z]))]
+            [Feature.FEAT_delta_acceleration_z].values))
+        data_delta_gyro_x = np.flip(np.sort(
+            dataframe[np.invert(np.isnan(dataframe[Feature.FEAT_delta_gyro_x]))]
+            [Feature.FEAT_delta_gyro_x].values))
+        data_delta_gyro_y = np.flip(np.sort(
+            dataframe[np.invert(np.isnan(dataframe[Feature.FEAT_delta_gyro_y]))]
+            [Feature.FEAT_delta_gyro_y].values))
+        data_delta_gyro_z = np.flip(np.sort(
+            dataframe[np.invert(np.isnan(dataframe[Feature.FEAT_delta_gyro_z]))]
+            [Feature.FEAT_delta_gyro_z].values))
 
         # all-data features
         result_dict[Feature.FEAT_percent_active] = len(data_second) / np.max(data_second)
@@ -294,6 +315,18 @@ class FeatureExtraction:
         result_dict[Feature.FEAT_stddev_scalar_gyro] = np.std(data_scalar_gyro)
         result_dict[Feature.FEAT_mean_scalar_acceleration] = np.mean(data_scalar_acceleration)
         result_dict[Feature.FEAT_stddev_scalar_acceleration] = np.std(data_scalar_acceleration)
+        result_dict[Feature.FEAT_mean_acceleration_x] = np.mean(data_acceleration_x)
+        result_dict[Feature.FEAT_stddev_acceleration_x] = np.std(data_acceleration_x)
+        result_dict[Feature.FEAT_mean_acceleration_y] = np.mean(data_acceleration_y)
+        result_dict[Feature.FEAT_stddev_acceleration_y] = np.std(data_acceleration_y)
+        result_dict[Feature.FEAT_mean_acceleration_z] = np.mean(data_acceleration_z)
+        result_dict[Feature.FEAT_stddev_acceleration_z] = np.std(data_acceleration_z)
+        result_dict[Feature.FEAT_mean_gyro_x] = np.mean(data_gyro_x)
+        result_dict[Feature.FEAT_stddev_gyro_x] = np.std(data_gyro_x)
+        result_dict[Feature.FEAT_mean_gyro_y] = np.mean(data_gyro_y)
+        result_dict[Feature.FEAT_stddev_gyro_y] = np.std(data_gyro_y)
+        result_dict[Feature.FEAT_mean_gyro_z] = np.mean(data_gyro_z)
+        result_dict[Feature.FEAT_stddev_gyro_z] = np.std(data_gyro_z)
 
         result_dict[Feature.FEAT_mean_delta_bearing] = np.mean(data_delta_bearing)
         result_dict[Feature.FEAT_stddev_delta_bearing] = np.std(data_delta_bearing)
@@ -323,6 +356,18 @@ class FeatureExtraction:
         result_dict[Feature.FEAT_stddev20_scalar_gyro] = np.std(data_scalar_gyro[:int(len(data_scalar_gyro)*0.2)])
         result_dict[Feature.FEAT_mean20_scalar_acceleration] = np.mean(data_scalar_acceleration[:int(len(data_scalar_acceleration)*0.2)])
         result_dict[Feature.FEAT_stddev20_scalar_acceleration] = np.std(data_scalar_acceleration[:int(len(data_scalar_acceleration)*0.2)])
+        result_dict[Feature.FEAT_mean20_acceleration_x] = np.mean(data_acceleration_x[:int(len(data_acceleration_x)*0.2)])
+        result_dict[Feature.FEAT_stddev20_acceleration_x] = np.std(data_acceleration_x[:int(len(data_acceleration_x)*0.2)])
+        result_dict[Feature.FEAT_mean20_acceleration_y] = np.mean(data_acceleration_y[:int(len(data_acceleration_y)*0.2)])
+        result_dict[Feature.FEAT_stddev20_acceleration_y] = np.std(data_acceleration_y[:int(len(data_acceleration_y)*0.2)])
+        result_dict[Feature.FEAT_mean20_acceleration_z] = np.mean(data_acceleration_z[:int(len(data_acceleration_z)*0.2)])
+        result_dict[Feature.FEAT_stddev20_acceleration_z] = np.std(data_acceleration_z[:int(len(data_acceleration_z)*0.2)])
+        result_dict[Feature.FEAT_mean20_gyro_x] = np.mean(data_gyro_x[:int(len(data_gyro_x)*0.2)])
+        result_dict[Feature.FEAT_stddev20_gyro_x] = np.std(data_gyro_x[:int(len(data_gyro_x)*0.2)])
+        result_dict[Feature.FEAT_mean20_gyro_y] = np.mean(data_gyro_y[:int(len(data_gyro_y)*0.2)])
+        result_dict[Feature.FEAT_stddev20_gyro_y] = np.std(data_gyro_y[:int(len(data_gyro_y)*0.2)])
+        result_dict[Feature.FEAT_mean20_gyro_z] = np.mean(data_gyro_z[:int(len(data_gyro_z)*0.2)])
+        result_dict[Feature.FEAT_stddev20_gyro_z] = np.std(data_gyro_z[:int(len(data_gyro_z)*0.2)])
 
         result_dict[Feature.FEAT_mean20_delta_bearing] = np.mean(data_delta_bearing[:int(len(data_delta_bearing)*0.2)])
         result_dict[Feature.FEAT_stddev20_delta_bearing] = np.std(data_delta_bearing[:int(len(data_delta_bearing)*0.2)])
@@ -352,6 +397,18 @@ class FeatureExtraction:
         result_dict[Feature.FEAT_stddev5_scalar_gyro] = np.std(data_scalar_gyro[:int(len(data_scalar_gyro) * 0.05)])
         result_dict[Feature.FEAT_mean5_scalar_acceleration] = np.mean(data_scalar_acceleration[:int(len(data_scalar_acceleration) * 0.05)])
         result_dict[Feature.FEAT_stddev5_scalar_acceleration] = np.std(data_scalar_acceleration[:int(len(data_scalar_acceleration) * 0.05)])
+        result_dict[Feature.FEAT_mean5_acceleration_x] = np.mean(data_acceleration_x[:int(len(data_acceleration_x) * 0.05)])
+        result_dict[Feature.FEAT_stddev5_acceleration_x] = np.std(data_acceleration_x[:int(len(data_acceleration_x) * 0.05)])
+        result_dict[Feature.FEAT_mean5_acceleration_y] = np.mean(data_acceleration_y[:int(len(data_acceleration_y) * 0.05)])
+        result_dict[Feature.FEAT_stddev5_acceleration_y] = np.std(data_acceleration_y[:int(len(data_acceleration_y) * 0.05)])
+        result_dict[Feature.FEAT_mean5_acceleration_z] = np.mean(data_acceleration_z[:int(len(data_acceleration_z) * 0.05)])
+        result_dict[Feature.FEAT_stddev5_acceleration_z] = np.std(data_acceleration_z[:int(len(data_acceleration_z) * 0.05)])
+        result_dict[Feature.FEAT_mean5_gyro_x] = np.mean(data_gyro_x[:int(len(data_gyro_x) * 0.05)])
+        result_dict[Feature.FEAT_stddev5_gyro_x] = np.std(data_gyro_x[:int(len(data_gyro_x) * 0.05)])
+        result_dict[Feature.FEAT_mean5_gyro_y] = np.mean(data_gyro_y[:int(len(data_gyro_y) * 0.05)])
+        result_dict[Feature.FEAT_stddev5_gyro_y] = np.std(data_gyro_y[:int(len(data_gyro_y) * 0.05)])
+        result_dict[Feature.FEAT_mean5_gyro_z] = np.mean(data_gyro_z[:int(len(data_gyro_z) * 0.05)])
+        result_dict[Feature.FEAT_stddev5_gyro_z] = np.std(data_gyro_z[:int(len(data_gyro_z) * 0.05)])
 
         result_dict[Feature.FEAT_mean5_delta_bearing] = np.mean(data_delta_bearing[:int(len(data_delta_bearing) * 0.05)])
         result_dict[Feature.FEAT_stddev5_delta_bearing] = np.std(data_delta_bearing[:int(len(data_delta_bearing) * 0.05)])
@@ -381,6 +438,18 @@ class FeatureExtraction:
         result_dict[Feature.FEAT_stddev1_scalar_gyro] = np.std(data_scalar_gyro[:int(len(data_scalar_gyro) * 0.01)])
         result_dict[Feature.FEAT_mean1_scalar_acceleration] = np.mean(data_scalar_acceleration[:int(len(data_scalar_acceleration) * 0.01)])
         result_dict[Feature.FEAT_stddev1_scalar_acceleration] = np.std(data_scalar_acceleration[:int(len(data_scalar_acceleration) * 0.01)])
+        result_dict[Feature.FEAT_mean1_acceleration_x] = np.mean(data_acceleration_x[:int(len(data_acceleration_x) * 0.01)])
+        result_dict[Feature.FEAT_stddev1_acceleration_x] = np.std(data_acceleration_x[:int(len(data_acceleration_x) * 0.01)])
+        result_dict[Feature.FEAT_mean1_acceleration_y] = np.mean(data_acceleration_y[:int(len(data_acceleration_y) * 0.01)])
+        result_dict[Feature.FEAT_stddev1_acceleration_y] = np.std(data_acceleration_y[:int(len(data_acceleration_y) * 0.01)])
+        result_dict[Feature.FEAT_mean1_acceleration_z] = np.mean(data_acceleration_z[:int(len(data_acceleration_z) * 0.01)])
+        result_dict[Feature.FEAT_stddev1_acceleration_z] = np.std(data_acceleration_z[:int(len(data_acceleration_z) * 0.01)])
+        result_dict[Feature.FEAT_mean1_gyro_x] = np.mean(data_gyro_x[:int(len(data_gyro_x) * 0.01)])
+        result_dict[Feature.FEAT_stddev1_gyro_x] = np.std(data_gyro_x[:int(len(data_gyro_x) * 0.01)])
+        result_dict[Feature.FEAT_mean1_gyro_y] = np.mean(data_gyro_y[:int(len(data_gyro_y) * 0.01)])
+        result_dict[Feature.FEAT_stddev1_gyro_y] = np.std(data_gyro_y[:int(len(data_gyro_y) * 0.01)])
+        result_dict[Feature.FEAT_mean1_gyro_z] = np.mean(data_gyro_z[:int(len(data_gyro_z) * 0.01)])
+        result_dict[Feature.FEAT_stddev1_gyro_z] = np.std(data_gyro_z[:int(len(data_gyro_z) * 0.01)])
 
         result_dict[Feature.FEAT_mean1_delta_bearing] = np.mean(data_delta_bearing[:int(len(data_delta_bearing) * 0.01)])
         result_dict[Feature.FEAT_stddev1_delta_bearing] = np.std(data_delta_bearing[:int(len(data_delta_bearing) * 0.01)])
