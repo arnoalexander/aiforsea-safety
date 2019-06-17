@@ -1,8 +1,6 @@
-<link href="misc/style.css" rel="stylesheet"></link>
-
 # AI for SEA - Safety Challenge
 
-![AI for SEA Safety Challenge](misc/Safety.png#center)
+![AI for SEA Safety Challenge](misc/Safety.png#)
 
 > Grab has been proactively pushing to make transportation in SEA safer. 
 As part of the effort, we want to identify dangerous drivings in a timely manner.
@@ -15,7 +13,7 @@ Run following commands.
 
 ```sh
 cd main
-python <input_path> <output_path>
+python main.py <input_path> <output_path>
 ```
 
 `<input_path>` 
@@ -30,7 +28,7 @@ Example:
 
 ```sh
 cd main
-python test.csv result.csv
+python main.py test.csv result.csv
 ```
 
 ## Behind the Scene
